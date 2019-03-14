@@ -1,4 +1,5 @@
-import random 
+from random import randint
+from string import digits
 
 def display_board(board):
     '''
@@ -23,7 +24,7 @@ def player_input():
     marker = " "
     while(marker != "X" and marker != "O"):
         # Continues to ask for player input until they enter X or O
-        marker = input("Player 1, please pick a marker 'X' or 'O': ").upper()
+        marker = input("Please pick a marker 'X' or 'O': ").upper()
     return marker
 
 def place_marker(board, marker, position):
@@ -55,7 +56,7 @@ def choose_first():
     INPUT: none
     OUTPUT: choosen marker
     '''
-    num = random.randint(1,2)
+    num = randint(1,2)
     print("Randomly choosing who goes first...")
     if num == 1:
         print("X goes first")
@@ -86,8 +87,12 @@ def player_choice(board):
     INPUT: board list
     OUTPUT: returns position(int 1-9) only if empty
     '''
-    position = int(input("Please enter a number (1-9): "))
-    if position < 1 or position > 9 or position == '':
+    position = input("Please enter a number (1-9): ")
+    if position != '' and position in digits:
+        position = int(position)
+    else:
+        return player_choice(board)
+    if position < 1 or position > 9:
         return player_choice(board)
     if space_check(board, position):
         return position
@@ -112,12 +117,15 @@ while True:
     player_input()
     current_player = choose_first()
     game_on = True
+    print("These are the available moves in the game: ")
+    display_board(["*",1,2,3,4,5,6,7,8,9])
+    input("\n Hit any key to start the game!")
     while(game_on):
         position = player_choice(board)
         place_marker(board, current_player, position)
         display_board(board)
         if win_check(board, current_player):
-            print(f"\n {current_player} has won the game!")
+            print(f"\n Player {current_player} has won the game!")
             break
         elif full_board_check(board):
             print("\n It's a tie! \n")
