@@ -56,9 +56,8 @@ def choose_first():
     INPUT: none
     OUTPUT: choosen marker
     '''
-    num = randint(1,2)
     print("Randomly choosing who goes first...")
-    if num == 1:
+    if randint(1,2) == 1:
         print("X goes first")
         return "X"
     else:
@@ -79,7 +78,7 @@ def full_board_check(board):
     INPUT: board list
     OUTPUT: boolean(True = full)
     '''
-    return " " not in board
+    return " " not in board[1:]
 
 def player_choice(board):
     '''
@@ -112,28 +111,28 @@ def replay():
     return response == "Y"
 
 while True:
-    board = ["*", " ", " ", " ", " ", " ", " ", " ", " ", " "]
+    board = [" "] * 10
     print("Welcome to Tic Tac Toe!")
     player_input()
     current_player = choose_first()
     game_on = True
     print("These are the available moves in the game: ")
-    display_board(["*",1,2,3,4,5,6,7,8,9])
-    input("\n Hit any key to start the game!")
+    display_board(list(range(0,10)))
+    input("\nHit any key to start the game!")
     while(game_on):
         position = player_choice(board)
         place_marker(board, current_player, position)
         display_board(board)
         if win_check(board, current_player):
-            print(f"\n Player {current_player} has won the game!")
+            print(f"\nPlayer {current_player} has won the game!")
             break
         elif full_board_check(board):
-            print("\n It's a tie! \n")
+            print("\nIt's a tie! \n")
             break
         if current_player == 'X':
             current_player = 'O'
         else:
             current_player = 'X'
-        print(f"\n Change player to {current_player}! \n")
+        print(f"\nChange player to {current_player}! \n")
     if not replay():
         break
